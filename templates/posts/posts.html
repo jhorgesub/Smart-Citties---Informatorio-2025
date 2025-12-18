@@ -1,95 +1,161 @@
 {% extends 'base.html' %}
-
 {% load static %}
-
 {% load colaborador_tags %}
 
-<title> {% block title %} Posts {% endblock title %} </title>
+{% block title %} Posts | Smart Cities {% endblock title %}
+
 {% block contenido %}
 
-<section class="container py-5">
-    <h2>Ordenar por:</h2>
-    <ul>
-        <a role="button" class="btn btn-success" href="{% url 'apps.posts:posts' %}?orden=reciente">Más reciente</a>
-        <a role="button" class="btn btn-success" href="{% url 'apps.posts:posts' %}?orden=antiguo">Más antiguo</a>
-        <a role="button" class="btn btn-success" href="{% url 'apps.posts:posts' %}?orden=alfabetico">Orden
-            alfabético</a>
-        <a role="button" class="btn btn-success" href="{% url 'apps.posts:categoria_lista' %}">Listar todas las
-            categorias</a>
-    </ul>
+<section class="container py-5 mt-5" id="posts-start" tabindex="-1">
+    <div class="text-center mb-5">
+        <h6 class="section-subtitle mb-2">Explora el contenido</h6>
+        <h2 class="section-title mb-4">Ordenar por:</h2>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a class="btn btn-outline-primary btn-rounded btn-sm px-4 shadow-none" href="?orden=reciente">
+                <i class="ti-timer me-1"></i> Más reciente
+            </a>
+            <a class="btn btn-outline-primary btn-rounded btn-sm px-4 shadow-none" href="?orden=antiguo">
+                <i class="ti-back-left me-1"></i> Más antiguo
+            </a>
+            <a class="btn btn-outline-primary btn-rounded btn-sm px-4 shadow-none" href="?orden=alfabetico">
+                <i class="ti-text me-1"></i> A-Z
+            </a>
+            <a class="btn btn-primary btn-rounded btn-sm px-4 text-white" href="{% url 'apps.posts:categoria_lista' %}">
+                <i class="ti-view-grid me-1"></i> Categorías
+            </a>
+        </div>
+    </div>
+
     {% if user.is_superuser or request.user|has_group:"Colaborador" %}
-    <div class="col d-grid">
-        <br><a role="button" class="btn btn-success" href="{% url 'apps.posts:posteo' %}">Crear nuevo post</a><br>
-        <br><a role="button" class="btn btn-success" href="{% url 'apps.posts:crear_categoria' %}">Crear nueva categoría</a>
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8 text-center bg-light p-4 rounded-lg shadow-sm border border-primary border-opacity-25">
+            <h6 class="text-primary mb-3 small fw-bold"><i class="ti-settings me-2"></i>PANEL DE GESTIÓN</h6>
+            <div class="d-flex justify-content-center gap-3">
+                <a class="btn btn-success btn-rounded w-md shadow-sm" href="{% url 'apps.posts:posteo' %}">
+                    <i class="ti-plus me-1"></i> Nuevo Post
+                </a>
+                <a class="btn btn-dark btn-rounded w-md shadow-sm" href="{% url 'apps.posts:crear_categoria' %}">
+                    <i class="ti-folder me-1"></i> Nueva Categoría
+                </a>
+            </div>
+        </div>
     </div>
     {% endif %}
-    <div class="row text-center pt-3">
-        <div class="col-lg-6 m-auto">
-            <h1 class="h1">Últimos posts sobre Smart Cities</h1>
-            <p>
 
-            </p>
-        </div>
+    <div class="text-center mb-5">
+        <h1 class="h1 fw-bold">Posts sobre Smart Cities</h1>
+        <div class="w-25 mx-auto border-bottom border-primary border-2"></div>
     </div>
-    <div class="row">
+
+    <div class="row g-4" id="post-container">
         {% for post in posts %}
-        <div class="col-12 col-md-4 p-5 mt-3">
-            <h4 class="text-center mt-3 mb-3">{{ post.titulo | capfirst }}</h4>
-            <h6 class="text-center mt-6 mb-6">{{ post.fecha|date:"d \d\e F \d\e Y" }}</h6>
-            <div class="text-center mt-3 mb-3">
-                <a><img src="{{ post.imagen.url }}" class="rounded-circle img-fluid border"
-                        style="width: 150px; height: 150px;"></a>
-                <br>
-                <h6 class="text-center mt-1 mb-1">{{ post.resumen }}</h6>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm transition-hover rounded-lg overflow-hidden">
+                <div class="position-relative">
+                    {% if post.imagen %}
+                    <img src="{{ post.imagen.url }}" class="card-img-top" style="height: 220px; object-fit: cover;"
+                        alt="{{ post.titulo }}">
+                    {% else %}
+                    <img src="{% static 'assets/imgs/placeholder.jpg' %}" class="card-img-top"
+                        style="height: 220px; object-fit: cover;">
+                    {% endif %}
+
+                    <span class="badge bg-primary position-absolute top-0 start-0 m-3 shadow-sm">{{ post.categoria
+                        }}</span>
+
+                    {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+                    <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2">
+                        <a href="{% url 'apps.posts:posts' %}" class="btn-admin-tool shadow-sm text-primary"
+                            title="Editar">
+                            <i class="ti-pencil"></i>
+                        </a>
+                        <button class="btn-admin-tool shadow-sm text-danger border-0" data-bs-toggle="modal"
+                            data-bs-target="#delModal{{ post.pk }}" title="Eliminar">
+                            <i class="ti-trash"></i>
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-2 text-muted small">
+                        <i class="ti-calendar me-2"></i> {{ post.fecha|date:"d M, Y" }}
+                    </div>
+                    <h5 class="card-title fw-bold text-dark">{{ post.titulo | capfirst }}</h5>
+                    <p class="card-text text-muted small" style="text-align: justify;">
+                        {{ post.resumen|default:post.subtitulo|truncatechars:100 }}
+                    </p>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 p-4 pt-0">
+                    <a href="{% url 'apps.posts:post_individual' post.id %}"
+                        class="btn btn-outline-primary btn-rounded w-100">
+                        Leer post <i class="ti-arrow-right ms-1"></i>
+                    </a>
+                </div>
             </div>
-            <p class="text-center"><a class="btn btn-success"
-                    href="{% url 'apps.posts:post_individual' post.id %}">Ingresá</a></p>
         </div>
+
+        {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+        <div class="modal fade" id="delModal{{ post.pk }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow rounded-lg">
+                    <div class="modal-body p-5 text-center">
+                        <i class="ti-alert text-danger d-block mb-4" style="font-size: 4rem;"></i>
+                        <h4 class="fw-bold">¿Eliminar publicación?</h4>
+                        <p class="text-muted">Estás a punto de borrar: <br><strong>{{ post.titulo }}</strong></p>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <button type="button" class="btn btn-light btn-rounded px-4"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <form action="{% url 'apps.posts:post_eliminar' post.pk %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-rounded px-4">Sí eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         {% empty %}
-        <li>No hay posts</li>
+        <div class="col-12 text-center py-5">
+            <i class="ti-face-sad text-muted" style="font-size: 4rem;"></i>
+            <p class="lead mt-3 text-muted">Aún no hay publicaciones disponibles.</p>
+        </div>
         {% endfor %}
     </div>
+</section>
 
+<div class="py-5"></div>
 
-    <script>
-        document.getElementById('categoria').addEventListener('change', function () {
-            var categoria = this.value;
-            if (categoria) {
-                window.location.href = '/posts/' + categoria + '/';
-            } else {
-                window.location.href = '/posts/';
-            }
-        });
-    </script>
-    <script>
-        function updateUrl() {
-            var categoria = document.getElementById('categoria').value;
-            var orden = document.getElementById('orden').value;
-            var fecha = document.getElementById('fecha').value;
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const startSection = document.getElementById('posts-start');
+        const cards = document.querySelectorAll('.card.transition-hover');
 
-            var url = '/posts/';
-            if (categoria) {
-                url += categoria + '/';
-            }
-            if (orden || fecha) {
-                url += '?';
-                if (orden) {
-                    url += 'orden=' + orden;
-                    if (fecha) {
-                        url += '&';
-                    }
-                }
-                if (fecha) {
-                    url += 'fecha=' + fecha;
-                }
-            }
-
-            window.location.href = url;
+        // 1. Foco y desplazamiento al inicio de la sección (Título)
+        if (startSection) {
+            setTimeout(() => {
+                startSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                startSection.focus({ preventScroll: true });
+            }, 300);
         }
 
-        document.getElementById('categoria').addEventListener('change', updateUrl);
-        document.getElementById('orden').addEventListener('change', updateUrl);
-        document.getElementById('fecha').addEventListener('change', updateUrl);
-    </script>
-</section>
+        // 2. Animación de revelado en cascada para las tarjetas
+        if (cards.length > 0) {
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.6s ease-out ${index * 0.15}s`;
+
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 400); // Empezamos después de que el scroll se mueva un poco
+            });
+        }
+    });
+</script>
+
 {% endblock %}

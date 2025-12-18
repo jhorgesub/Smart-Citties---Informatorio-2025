@@ -1,20 +1,59 @@
 {% extends 'base.html' %}
-{% block contenido %}
+{% load static %}
 {% load crispy_forms_tags %}
 
-<center>
+{% block title %} Nueva Categoría | Smart Cities {% endblock title %}
 
-<div class='main-container' style="text-align: center; margin-top: 12%; margin-bottom: 12%;"></div>
-        <h1>Agregar nueva categoría</h1>
-        <form method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <input class="btn btn-success" type="submit" value="Agregar">
-    </form>
-    <div class="container-fluid" style="margin-top: 300px;">
-        <a class="btn btn-success" 
-        href="{% url 'apps.posts:categoria_lista' %}">Listar todas las categorias</a>
+{% block contenido %}
+
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            
+            <div class="text-center mb-4">
+                <h6 class="section-subtitle mb-2">Administración</h6>
+                <h2 class="section-title text-primary">Nueva Categoría</h2>
+                <p class="text-muted small">Definí una nueva temática para organizar los artículos.</p>
+            </div>
+
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
+                <div class="bg-primary" style="height: 5px;"></div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <i class="ti-folder text-primary" style="font-size: 3rem;"></i>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="text-dark">
+                            {{ form | crispy }}
+                        </div>
+
+                        <div class="d-grid gap-3 mt-4">
+                            <button type="submit" class="btn btn-primary btn-rounded shadow">
+                                <i class="ti-check me-1"></i> Agregar Categoría
+                            </button>
+                            
+                            <a href="{% url 'apps.posts:categoria_lista' %}" class="btn btn-outline-secondary btn-rounded btn-sm border-0">
+                                <i class="ti-list me-1"></i> Ver todas las categorías
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="javascript:history.back()" class="text-muted small text-decoration-none">
+                    <i class="ti-arrow-left small"></i> Volver al paso anterior
+                </a>
+            </div>
+
+        </div>
     </div>
 </div>
-</center>
+
+<div class="py-5"></div>
+
 {% endblock %}

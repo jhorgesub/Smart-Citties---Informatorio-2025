@@ -2,39 +2,75 @@
 {% load static %}
 {% load colaborador_tags %}
 
-<title>{% block title %}Eliminación de artículos{%endblock %}</title>
+{% block title %} Eliminar Post | Smart Cities {% endblock title %}
 
 {% block contenido %}
-{% if user.is_superuser or request.user|has_group:"Colaborador"  %}
-<div class="container py-5">
-    <div class="col-md-6 m-auto text-center">
-    <h1>Eliminar post</h1>
-    <p>¿Está seguro de que deseas eliminar el post "{{ object }}"?</p>
-    <form class="col-md-5 m-auto" method="POST" role="form" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col text-end mt-2">
-                <button type="submit" class="btn btn-danger btn-lg px-3">Eliminar</button>
-                <br><br>
-                <a class="btn btn-success btn-lg" id="cancelButton"><span>Cancelar</span></a>
+
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            
+            {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden text-center">
+                <div class="bg-danger" style="height: 5px;"></div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-4">
+                        <i class="ti-alert text-danger" style="font-size: 4rem; display: block;"></i>
+                    </div>
+
+                    <h2 class="fw-bold text-dark mb-3">¿Eliminar post?</h2>
+                    <p class="text-muted mb-4">
+                        Estás a punto de borrar permanentemente: <br>
+                        <span class="text-dark fw-bold">"{{ object.titulo|default:object }}"</span>. <br>
+                        Esta acción no se puede deshacer.
+                    </p>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="d-grid gap-3">
+                            <button type="submit" class="btn btn-danger btn-rounded shadow-sm py-2">
+                                <i class="ti-trash me-2"></i> Eliminar
+                            </button>
+                            
+                            <a href="javascript:history.back()" class="btn btn-light btn-rounded border text-muted py-2" id="cancelButton">
+                                <i class="ti-close me-2"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
+
+            {% else %}
+            <div class="card shadow-lg border-0 rounded-lg p-5 text-center bg-white">
+                <i class="ti-na text-warning mb-4" style="font-size: 4rem; display: block;"></i>
+                <h4 class="fw-bold text-dark">Acceso Restringido</h4>
+                <p class="text-muted">No tenés los permisos necesarios para eliminar este contenido.</p>
+                <div class="mt-4 pt-3 border-top">
+                    <a href="{% url 'index' %}" class="btn btn-primary btn-rounded px-5 shadow">
+                        <i class="ti-home me-2"></i>Volver al Inicio
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
-    </form>
     </div>
 </div>
-{% else %}
-    <div class="container text-center">
-        <br><br><br><br>
-        <h1>Solo usuarios con permisos pueden acceder a esta página</h1>
-        <br><br><br><br>
-    </div>
-{% endif %}
+
+<div class="py-5"></div>
 
 <script>
+    // Lógica para el botón cancelar
     document.getElementById('cancelButton').addEventListener('click', function(event) {
         event.preventDefault();
-        history.back();
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "{% url 'apps.posts:posts' %}";
+        }
     });
-    </script>
-    
+</script>
+
 {% endblock %}

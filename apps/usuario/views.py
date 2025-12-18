@@ -17,8 +17,8 @@ class RegistrarUsuario(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, 'Registro exitoso. Por favor, inicia sesión.')
-        group = Group.objects.get(name='Registrado')
+        messages.success(self.request, 'Registro exitoso. Por favor inicia sesión')
+        group = Group.objects.get(name='Usuario Registrado')
         self.object.groups.add(group)
         return redirect('apps.usuario:login')
 
@@ -75,6 +75,6 @@ class MyPasswordResetView(PasswordResetView):
     template_name = 'registration/recuperar_contrasenia.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Se envió un email de recuperación. Revise su casilla de correo para recuperar su cuenta.')
+        messages.success(self.request, 'Se envió un email de recuperación. Revise correo electrónico para recuperar su cuenta')
         return reverse('index')
 

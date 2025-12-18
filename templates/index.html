@@ -1,115 +1,129 @@
 {% extends 'base.html' %}
-
 {% load static %}
-
 {% load crispy_forms_tags %}
 
-<title>{% block title %}Smart Cities - Inicio{% endblock title %}</title>
+{% block title %}Smart Cities - Inicio{% endblock title %}
 
 {% block contenido %}
 
-<div class="container my-1" id="definicion">
-    <header class="text-center mb-4" id="blog">
-        <h1 class="display-4 fw-bold">¿Qué es una Smart City?</h1>
-        <h4 class="text-muted mt-3">Las ciudades inteligentes priorizan la experiencia humana sobre la automatización y
-            los algoritmos en la planificación urbana.</h4>
-        <p class="lead mt-4 mx-auto" style="max-width: 800px;">El término aparece en conferencias, planes de gobierno,
-            titulares de prensa y hasta en las propuestas de las grandes empresas tecnológicas. Pero ¿qué significa
-            realmente? ¿Es solo un modo de decir que la ciudad está llena de sensores, cámaras y datos? ¿O hay algo más
-            detrás de esa etiqueta que parece prometer modernidad?</p>
+<div class="container my-5 pt-4" id="definicion">
+    <header class="text-center mb-5">
+        <h6 class="section-subtitle mb-2">Innovación urbana</h6>
+        <h1 class="display-4 fw-bold text-primary">¿Qué es una Smart City?</h1>
+        <p class="lead mt-4 mx-auto text-muted" style="max-width: 800px; text-align: justify;">
+            Más allá de la tecnología, las ciudades inteligentes priorizan la <strong>experiencia humana</strong>. 
+            Utilizan sensores y datos no como un fin, sino como una herramienta para crear entornos más sostenibles, 
+            seguros y eficientes para todos.
+        </p>
     </header>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
         <div class="col-lg-10">
-            <div id="smartCityCarousel"
-                class="carousel slide shadow-lg rounded-4 overflow-hidden border border-3 border-light"
-                data-bs-ride="carousel">
-
+            <div id="smartCityCarousel" class="carousel slide shadow-lg rounded-4 overflow-hidden border border-3 border-light" data-bs-ride="carousel">
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="2"></button>
                 </div>
 
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="5000">
-                        <img src="/media/media/Imagen1.png" class="d-block w-100"
-                            alt="Vista panorámica de una ciudad con superposición de datos digitales"
-                            style="height: 500px; object-fit: cover;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
-                            <h5>Conectividad y Gestión de Datos</h5>
+                        <img src="/media/media/Imagen1.png" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Gestión de Datos">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-4 rounded-3 mb-4 mx-5">
+                            <h5 class="text-primary"><i class="ti-server me-2"></i>Conectividad y Gestión de Datos</h5>
                             <p>La columna vertebral de una Smart City es la red de sensores interconectados.</p>
                         </div>
                     </div>
 
                     <div class="carousel-item" data-bs-interval="5000">
-                        <img src="/media/media/Imagen2.png" class="d-block w-100"
-                            alt="Personas usando bicicletas y transporte público, destacando la movilidad sostenible"
-                            style="height: 500px; object-fit: cover;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
-                            <h5>Movilidad Inteligente y Sostenible</h5>
+                        <img src="/media/media/Imagen2.png" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Movilidad">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-4 rounded-3 mb-4 mx-5">
+                            <h5 class="text-primary"><i class="ti-direction-alt me-2"></i>Movilidad Inteligente</h5>
                             <p>Optimización del tráfico y promoción de alternativas ecológicas para los ciudadanos.</p>
                         </div>
                     </div>
 
                     <div class="carousel-item" data-bs-interval="5000">
-                        <img src="/media/media/Imagen3.png" class="d-block w-100"
-                            alt="Edificios con paneles solares y zonas verdes, enfocando la energía inteligente"
-                            style="height: 500px; object-fit: cover;">
-                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
-                            <h5>Infraestructura Ecológica</h5>
+                        <img src="/media/media/Imagen3.png" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Ecología">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 p-4 rounded-3 mb-4 mx-5">
+                            <h5 class="text-primary"><i class="ti-shine me-2"></i>Infraestructura Ecológica</h5>
                             <p>Sistemas de energía eficiente y gestión avanzada de recursos naturales.</p>
                         </div>
                     </div>
                 </div>
 
-                <button class="carousel-control-prev" type="button" data-bs-target="#smartCityCarousel"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
+                <button class="carousel-control-prev" type="button" data-bs-target="#smartCityCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#smartCityCarousel"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
+                <button class="carousel-control-next" type="button" data-bs-target="#smartCityCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
                 </button>
             </div>
-
-            <section class="section" id="blog">
-                <div class="container">
-                    <h6 class="section-title mb-0 text-center">Últimas noticias</h6>
-                    <h6 class="section-subtitle mb-5 text-center">Las últimas noticias sobre Smart Cities alrededor del
-                        mundo</h6>
-
-                    <div class="row">
-                        {% for post in ultimos_posts %}
-                        <div class="col-md-4">
-                            <div class="card border-0 mb-4">
-                                <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}" class="card-img-top w-100"
-                                    style="height: 200px; object-fit: cover;">
-                                <div class="card-body">
-                                    <h6 class="card-title">{{ post.titulo | capfirst }}</h6>
-
-                                    <p>{{ post.subtitulo }}</p>
-
-                                    <a href="{% url 'apps.posts:post_individual' post.id %}" class="small text-muted">Ir
-                                        a la noticia</a>
-                                </div>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <div class="col-12 text-center">
-                            <p class="lead">Actualmente no hay posts publicados.</p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </section>
         </div>
     </div>
+
+    <div class="row text-center py-5">
+        <div class="col-md-4 mb-4">
+            <i class="ti-stats-up text-primary" style="font-size: 3rem;"></i>
+            <h5 class="mt-3">Eficiencia</h5>
+            <p class="small text-muted">Reducción de costos y optimización de recursos municipales.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="ti-world text-primary" style="font-size: 3rem;"></i>
+            <h5 class="mt-3">Sostenibilidad</h5>
+            <p class="small text-muted">Baja huella de carbono y protección del medio ambiente.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <i class="ti-heart text-primary" style="font-size: 3rem;"></i>
+            <h5 class="mt-3">Calidad de Vida</h5>
+            <p class="small text-muted">Servicios pensados en el bienestar del ciudadano.</p>
+        </div>
+    </div>
+
+    <section class="section border-top" id="blog">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h6 class="section-subtitle mb-2">Nuestro Blog</h6>
+                <h2 class="section-title">Últimas noticias</h2>
+            </div>
+
+            <div class="row">
+                {% for post in ultimos_posts %}
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100 transition-hover">
+                        <div class="position-relative">
+                            <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}" class="card-img-top" style="height: 220px; object-fit: cover;">
+                            <span class="badge bg-primary position-absolute bottom-0 start-0 m-3">{{ post.categoria }}</span>
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">{{ post.titulo | capfirst }}</h5>
+                            <p class="card-text text-muted small">{{ post.subtitulo | truncatechars:80 }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 border-top pt-3">
+                                <span class="small text-muted"><i class="ti-calendar me-1"></i>{{ post.publicado|date:"d M, Y" }}</span>
+                                <a href="{% url 'apps.posts:post_individual' post.id %}" class="btn btn-link text-primary p-0 fw-bold"> Leer más <i class="ti-arrow-right small ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <i class="ti-package text-muted" style="font-size: 4rem;"></i>
+                    <p class="lead mt-3">Actualmente no hay posts publicados.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 </div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .transition-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+    }
+</style>
 
 {% endblock contenido %}

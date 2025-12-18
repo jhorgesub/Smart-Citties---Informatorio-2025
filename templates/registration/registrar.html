@@ -2,34 +2,75 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-<title>{% block title %} Registro de usuario {% endblock title %}</title>
+{% block title %} Registro de usuario | Smart Cities {% endblock title %}
 
 {% block contenido %}
 
-<div class="container-fluid bg-light py-5">
+<div class="container-fluid bg-light py-5 mt-5">
     <div class="col-md-6 m-auto text-center">
-        <h1 class="h1">Registro de usuarios</h1>
-        <p>
-            Muchas gracias por registrarte con nosotros. A continuación te pedimos por favor completa los campos.
+        <h6 class="section-subtitle mb-2">Unite a la comunidad</h6>
+        <h1 class="h1 fw-bold">Crear nueva cuenta</h1>
+        <p class="text-muted lead">
+            Completá los campos a continuación para empezar a participar en Smart Cities.
         </p>
     </div>
 </div>
 
 <div class="container py-5">
-    <div class="row py-5">
-        <form action="{{ action_url }}" class="col-md-9 m-auto" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                {{ form | crispy }}
-            </div>
-            <div class="row">
-                <div class="col text-end mt-2">
-                    <button type="submit" class="btn btn-success btn-lg px-3">Registrar</button>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
+                <div class="bg-primary" style="height: 5px;"></div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <i class="ti-id-badge text-primary" style="font-size: 3.5rem;"></i>
+                    </div>
+
+                    <form action="{{ action_url }}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row text-dark">
+                            {{ form | crispy }}
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg btn-rounded w-lg shadow-sm">
+                                <i class="ti-check-box me-2"></i> Confirmar Registro
+                            </button>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="text-center">
+                            <p class="small text-muted mb-0">¿Ya tenés una cuenta?</p>
+                            <a href="{% url 'apps.usuario:login' %}" class="text-decoration-none transition-link fw-bold">
+                                <i class="ti-arrow-right small"></i> Iniciar sesión aquí
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
+<div class="py-5"></div>
+
+<style>
+    /* Estilos específicos para armonizar con leadmark.css */
+    .rounded-lg { border-radius: 1rem !important; }
+    .btn-rounded { border-radius: 50px !important; }
+    .w-lg { min-width: 200px; }
+    
+    /* Efecto para el link inferior */
+    .transition-link { 
+        color: #6c757d;
+        transition: color 0.3s ease; 
+    }
+    .transition-link:hover { 
+        color: #ff6e42 !important; 
+    }
+</style>
 
 {% endblock %}

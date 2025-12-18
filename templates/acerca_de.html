@@ -1,30 +1,124 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %} {% block contenido %}
 
-{% block contenido %}
+<style>
+    /* Definimos la animación de rebote */
+    @keyframes bounceCustom {
+        0% {
+            transform: scale(0.3);
+            opacity: 0;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        70% {
+            transform: scale(0.9);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* La aplicamos forzosamente al ID */
+    #icon-world {
+        animation: bounceCustom 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards !important;
+    }
+
+    /* Animación de fade para la tarjeta */
+    .reveal-effect {
+        animation: fadeInUp 1s ease-out forwards !important;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
 <section class="container py-5 mt-5">
     <div class="row justify-content-center">
-        <div class="col-lg-10 shadow p-5 bg-white rounded">
-            <h2 class="fw-bold border-bottom pb-3 text-primary">Acerca de Smart Cities</h2>
+        <div id="about-content" tabindex="-1"
+            class="col-lg-10 shadow-lg p-md-5 p-4 bg-white rounded-lg border-top border-primary border-4 reveal-effect">
+            <div class="text-center mb-5">
+                <i id="icon-world" class="ti-world text-primary" style="font-size: 3rem; display: inline-block"></i>
 
-            <h4 class="mt-5">Propósito del Blog</h4>
-            <p>
-                Smart Cities es una plataforma diseñada para explorar la integración de la tecnología en la infraestructura urbana. 
-                Busca informar sobre sostenibilidad, eficiencia energética y el uso de datos para mejorar la vida de los ciudadanos.
-            </p>
+                <h6 class="section-subtitle mb-2 mt-3">Conocé mi proyecto</h6>
+                <h2 class="section-title text-primary">Acerca de Smart Cities</h2>
+                <div class="w-25 mx-auto border-bottom border-primary"></div>
+            </div>
 
-            <h4 class="mt-4">El Equipo</h4>
-            <p>
-                Este sitio fue desarrollado íntegramente por <strong>Jorge Subeldia</strong> 
-                para la Etapa 2 - Desarrollo Web del <strong>Informatorio - Chaco 2025</strong> 
-                utilizando <strong>Python,</strong>   
-                el framework <strong>Django</strong>, base de datos SQLite y Bootstrap para el diseño responsivo.
-            </p>
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4">
+                    <div class="p-4 h-100 rounded bg-light border-left border-primary shadow-sm">
+                        <h4 class="mb-3 d-flex align-items-center">
+                            <i class="ti-light-bulb text-primary me-2"></i> Propósito del Blog
+                        </h4>
+                        <p class="text-muted" style="line-height: 1.8; text-align: justify">
+                            Smart Cities es una plataforma diseñada para explorar la
+                            integración de la tecnología en la infraestructura urbana. Busca
+                            informar sobre <strong>sostenibilidad</strong>,
+                            <strong>eficiencia energética</strong>
+                            y el uso de datos para mejorar la calidad de vida de los
+                            ciudadanos en entornos modernos.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="p-4 h-100 rounded bg-light border-left border-primary shadow-sm">
+                        <h4 class="mb-3 d-flex align-items-center">
+                            <i class="ti-user text-primary me-2"></i> El Desarrollador
+                        </h4>
+                        <p class="text-muted" style="line-height: 1.8; text-align: justify">
+                            Este sitio fue desarrollado íntegramente por
+                            <strong>Jorge Subeldia</strong> para la Etapa 2: Desarrollo Web
+                            del <strong>Informatorio Chaco 2025</strong>. Se utilizó un stack
+                            profesional que incluye:
+                        </p>
+                        <ul class="list-unstyled mt-3">
+                            <li>
+                                <i class="ti-check text-success me-2"></i> Python & Django
+                            </li>
+                            <li><i class="ti-check text-success me-2"></i> SQLite</li>
+                            <li>
+                                <i class="ti-check text-success me-2"></i> Bootstrap 5 &
+                                LeadMark
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
             <div class="text-center mt-5">
-                <a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+                <a href="{% url 'index' %}" class="btn btn-primary btn-rounded w-md shadow">
+                    <i class="ti-home me-1"></i> Volver al inicio
+                </a>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const mainCard = document.getElementById("about-content");
+        if (mainCard) {
+            // Desplazamiento suave
+            mainCard.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            // Foco para accesibilidad
+            mainCard.focus();
+        }
+    });
+</script>
+
 {% endblock %}

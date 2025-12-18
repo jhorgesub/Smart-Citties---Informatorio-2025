@@ -2,26 +2,45 @@
 {% load static %}
 {% load colaborador_tags %}
 
-{% block title %} Categorías {% endblock title %}
+{% block title %} Categorías | Smart Cities {% endblock title %}
 
 {% block contenido %}
+
+<div class="container-fluid bg-light py-5 mt-5">
+    <div class="col-md-6 m-auto text-center">
+        <h1 class="h1 fw-bold">Listado de Categorías</h1>
+        <p class="text-muted lead">Seleccioná una categoría para ver los posts relacionados.</p>
+        
+        {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+        <a href="{% url 'apps.posts:crear_categoria' %}" class="btn btn-primary btn-rounded mt-3 shadow-sm">
+            <i class="ti-plus me-2"></i>Nueva Categoría
+        </a>
+        {% endif %}
+    </div>
+</div>
+
 <section class="container py-5">
-    <h1 class="text-center mb-5">Listado de Categorías</h1>
-    
     <div class="row">
         {% for categoria in categorias %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <h4 class="card-title">{{ categoria.nombre | capfirst }}</h4>
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm border-0 rounded-lg card-categoria">
+                <div class="card-body text-center p-4">
+                    <div class="icon-box mb-3">
+                        <i class="ti-package text-primary" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="card-title fw-bold text-dark">{{ categoria.nombre | capfirst }}</h4>
                     
-                    <div class="mt-3">
-                        <a class="btn btn-success" href="{% url 'apps.posts:post_por_categoria' pk=categoria.pk %}">Ingresá</a>
+                    <div class="d-flex justify-content-center gap-2 mt-4">
+                        <a class="btn btn-outline-primary btn-sm btn-rounded px-4" 
+                           href="{% url 'apps.posts:post_por_categoria' pk=categoria.pk %}">
+                            <i class="ti-eye me-1"></i> Ver Posts
+                        </a>
 
                         {% if user.is_superuser or request.user|has_group:"Colaborador" %}
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal{{ categoria.pk }}">
-                            Eliminar
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-rounded shadow-none" 
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal{{ categoria.pk }}">
+                            <i class="ti-trash"></i>
                         </button>
                         {% endif %}
                     </div>
@@ -29,33 +48,58 @@
             </div>
         </div>
 
-        <div class="modal fade" id="deleteModal{{ categoria.pk }}" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal{{ categoria.pk }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">¿Eliminar?</h5>
+                <div class="modal-content border-0 shadow-lg rounded-lg">
+                    <div class="modal-header bg-light border-0">
+                        <h5 class="modal-title fw-bold"><i class="ti-alert text-danger me-2"></i>Confirmar</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-center">
-                        ¿Estás seguro de eliminar la categoría <strong>{{ categoria.nombre }}</strong>?
+                    <div class="modal-body text-center py-4">
+                        ¿Estás seguro de eliminar <br><strong>{{ categoria.nombre }}</strong>?
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">No</button>
-
+                    <div class="modal-footer border-0 justify-content-center pb-4">
+                        <button type="button" class="btn btn-secondary btn-sm btn-rounded px-3" data-bs-dismiss="modal">Cancelar</button>
                         <form action="{% url 'apps.posts:categoria_eliminar' pk=categoria.pk %}" method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Sí eliminar</button>
+                            <button type="submit" class="btn btn-danger btn-sm btn-rounded px-3 shadow-sm">Sí, eliminar</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        
         {% empty %}
-        <div class="col-12 text-center">
-            <h3>No se encontraron categorías disponibles</h3>
-            <br><a role="button" class="btn btn-success" href="{% url 'apps.posts:crear_categoria' %}">Crear nueva categoría</a>
+        <div class="col-12 text-center py-5">
+            <i class="ti-folder text-muted" style="font-size: 4rem;"></i>
+            <h3 class="text-muted mt-3">No hay categorías disponibles</h3>
+            <a role="button" class="btn btn-primary btn-rounded mt-3" href="{% url 'apps.posts:crear_categoria' %}">
+                Crear la primera categoría
+            </a>
         </div>
         {% endfor %}
     </div>
 </section>
+
+<style>
+    .rounded-lg { border-radius: 1rem !important; }
+    .btn-rounded { border-radius: 50px !important; }
+    .card-categoria {
+        transition: all 0.3s ease;
+        border-bottom: 3px solid transparent !important;
+    }
+    .card-categoria:hover {
+        transform: translateY(-10px);
+        border-bottom: 3px solid #ff6e42 !important;
+    }
+    .icon-box {
+        background: #fff7f5;
+        width: 80px;
+        height: 80px;
+        line-height: 85px;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+</style>
+
 {% endblock %}

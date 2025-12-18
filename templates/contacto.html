@@ -1,38 +1,97 @@
 {% extends 'base.html' %}
-
 {% load static %}
-
 {% load crispy_forms_tags %}
 
-<title>{% block title %}Contacto{% endblock title %}</title>
+{% block title %}Contacto | Smart Cities{% endblock title %}
 
 {% block contenido %}
 
-<div class="container mt-5 pt-5">
+<div class="container mt-5 pt-5 pb-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-7 col-lg-6">
             
-            <h2 class="text-center mb-4">Contactanos</h2>
+            <div class="text-center mb-5">
+                <h6 class="section-subtitle mb-2">¿Tenés alguna duda?</h6>
+                <h2 class="section-title text-primary">Contactame</h2>
+                <div class="w-25 mx-auto border-bottom border-primary border-2"></div>
+            </div>
             
-            <form method="post" class="p-4 shadow rounded bg-white">
-
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class='message {{ message.tags}}'> {{message}}</div>
-                    {% endfor%}        
-                {% endif%}
-
-
-                {% csrf_token %}
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
+                <div class="bg-primary" style="height: 5px;"></div>
                 
-                {{ form|crispy }}
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <i class="ti-email text-primary" style="font-size: 3rem;"></i>
+                    </div>
 
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show border-0 shadow-sm" role="alert">
+                                    <i class="ti-info-alt me-2"></i> {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="mb-4 text-dark custom-crispy-labels">
+                            {{ form|crispy }}
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-rounded w-lg mt-2 shadow-sm">
+                                <i class="ti-location-arrow me-2"></i>Enviar mensaje
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small">
+                    <i class="ti-time me-1"></i> Responderé a la brevedad posible.
+                </p>
+            </div>
             
         </div>
     </div>
 </div>
+
+<div class="py-5"></div>
+
+<style>
+    /* Ajustes para los labels de Crispy */
+    .custom-crispy-labels label {
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 5px;
+    }
+    
+    .rounded-lg { 
+        border-radius: 1rem !important; 
+    }
+
+    /* Animación suave al pasar el mouse por la tarjeta */
+    .card {
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Buscamos el textarea dentro del formulario de comentarios
+        const campoNombreYApellido = document.querySelector('.custom-crispy-labels input[type="text"]');
+        if (campoNombreYApellido) {
+            campoNombreYApellido.focus();
+            // Opcional: Esto mueve el scroll hasta el cuadro si el post es muy largo
+            campoNombreYApellido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+</script>
+
 {% endblock %}

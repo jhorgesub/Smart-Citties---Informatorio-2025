@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es-ar">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,52 +10,77 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/vendors/themify-icons/css/themify-icons.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/leadmark.css' %}">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.17/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* --- 1. CONFIGURACIÓN GENERAL (Fondo blanco, texto oscuro) --- */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-background-clip: text;
+            /* Color de texto gris oscuro para fondos blancos */
+            -webkit-text-fill-color: #495057 !important;
+            transition: background-color 5000s ease-in-out 0s;
+            box-shadow: inset 0 0 20px 20px rgba(255, 255, 255, 1) !important;
+        }
+
+        /* --- 2. CONFIGURACIÓN PARA SECCIÓN CONTACTO (Fondo oscuro, texto blanco) --- */
+        /* Usamos el ID #contact para que estas reglas solo apliquen ahí */
+        #contact input:-webkit-autofill,
+        #contact input:-webkit-autofill:hover,
+        #contact input:-webkit-autofill:focus,
+        #contact textarea:-webkit-autofill {
+            -webkit-background-clip: text;
+            /* Texto blanco para el fondo oscuro */
+            -webkit-text-fill-color: white !important;
+            /* Sombra oscura para que no se vea el recuadro gris del navegador */
+            -webkit-box-shadow: inset 0 0 20px 20px rgba(0, 0, 0, 0) !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Mantener la línea inferior blanca en el contacto */
+        #contact .form-control:-webkit-autofill {
+            border-bottom: 1px solid white !important;
+        }
+    </style>
+
 </head>
 
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="40" id="home" style="overflow-x: hidden;">
-    
+
     <nav class="navbar custom-navbar navbar-expand-md navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'assets/imgs/logo.svg' %}" alt="Logo">
             </a>
             <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'apps.posts:posts' %}">Posts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'apps.contacto:contacto' %}">Contacto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'acerca_de' %}">Acerca de</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'apps.posts:posts' %}">Posts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'apps.contacto:contacto' %}">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'acerca_de' %}">Acerca de</a></li>
 
                     {% if user.is_authenticated %}
                     <li class="nav-item d-flex align-items-center">
                         <form action="{% url 'apps.usuario:logout' %}" method="post" id="logout-form" class="m-0">
                             {% csrf_token %}
-                            <button type="submit" class="ms-lg-4 btn btn-danger btn-sm rounded">
-                                {{ user.username }}: Cerrar sesión 
+                            <button type="submit" class="ms-lg-4 btn btn-danger btn-sm rounded shadow-sm">
+                                <i class="ti-power-off me-1"></i> {{ user.username }}: Salir
                             </button>
                         </form>
                     </li>
                     {% else %}
                     <li class="nav-item">
                         <a href="{% url 'apps.usuario:login' %}?next={{ request.path }}"
-                            class="ms-lg-4 nav-link btn btn-primary btn-sm rounded text-white">Iniciar sesión</a>
+                            class="ms-lg-4 nav-link btn btn-primary btn-sm rounded text-white shadow-sm">
+                            <i class="ti-lock me-1"></i> Iniciar sesión
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
@@ -64,34 +90,124 @@
 
     <header class="header">
         <div class="overlay">
-            <h1 class="subtitle">Ciudades inteligentes</h1>
+            <h1 class="subtitle">Tecnología y Sostenibilidad</h1>
             <h1 class="title">Smart Cities</h1>
         </div>
         <div class="shape">
             <svg viewBox="0 0 1500 200">
-                <path d="m 0,240 h 1500.4828 v -71.92164 c 0,0 -286.2763,-81.79324 -743.19024,-81.79324 C 300.37862,86.28512 0,168.07836 0,168.07836 Z" />
+                <path
+                    d="m 0,240 h 1500.4828 v -71.92164 c 0,0 -286.2763,-81.79324 -743.19024,-81.79324 C 300.37862,86.28512 0,168.07836 0,168.07836 Z" />
             </svg>
         </div>
-        <div class="mouse-icon"><div class="wheel"></div></div>
+        <div class="mouse-icon">
+            <div class="wheel"></div>
+        </div>
     </header>
 
     {% block contenido %}{% endblock %}
 
+    <section id="contact" class="section has-img-bg pb-0">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-5 my-3 text-center">
+                    <h5 class="mb-4 text-primary fw-bold">Conecta conmigo</h5>
+                    <div class="d-flex justify-content-center gap-4">
+                        <a href="https://www.linkedin.com/in/jorgesubeldia/" target="_blank"><i
+                                class="fab fa-linkedin fa-3x text-white"></i></a>
+                        <a href="https://www.instagram.com/jhor.geto_/" target="_blank"><i
+                                class="fab fa-instagram fa-3x text-white"></i></a>
+                        <a href="https://github.com/jhorgesub" target="_blank"><i
+                                class="fab fa-github fa-3x text-white"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <form method="POST" action="{% url 'apps.contacto:contacto' %}">
+                        {% csrf_token %}
+                        <h4 class="mb-4 text-white">Contactame</h4>
+                        <div class="row">
+                            <div class="form-group col-sm-4 mb-3"><input type="text"
+                                    class="form-control text-white rounded-0 bg-transparent border-white"
+                                    name="nombre_apellido" placeholder="Nombre" required></div>
+                            <div class="form-group col-sm-4 mb-3"><input type="email"
+                                    class="form-control text-white rounded-0 bg-transparent border-white" name="email"
+                                    placeholder="Email" required></div>
+                            <div class="form-group col-sm-4 mb-3"><input type="text"
+                                    class="form-control text-white rounded-0 bg-transparent border-white" name="asunto"
+                                    placeholder="Asunto"></div>
+                            <div class="form-group col-12 mb-3"><textarea name="mensaje" cols="30" rows="4"
+                                    class="form-control text-white rounded-0 bg-transparent border-white"
+                                    placeholder="Mensaje" required></textarea></div>
+                            <div class="form-group col-12 mb-0"><button type="submit"
+                                    class="btn btn-primary rounded btn-rounded w-md mt-3 shadow">Enviar</button></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <footer class="mt-5 py-4 border-top border-secondary text-center">
+                <p class="mb-0 small text-white">&copy; Created By <strong>Jorge Subeldia</strong></p>
+            </footer>
+        </div>
+    </section>
+
+    <div class="modal fade" id="djangoMessagesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-lg">
+                <div class="modal-header border-0 bg-light">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Notificación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div id="modalIcon" class="mb-3"></div>
+                    <p id="modalMessage" class="lead mb-0"></p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center pb-4">
+                    <button type="button" class="btn btn-primary btn-rounded px-5 shadow-sm"
+                        data-bs-dismiss="modal">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{% static 'assets/vendors/jquery/jquery-3.4.1.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         $(window).on('scroll', function () {
             var nav = $('.navbar');
             if ($(window).scrollTop() > 50) {
-                // Al bajar: aplicamos affix (fondo blanco) y cambiamos a navbar-light (letras oscuras)
-                nav.addClass('affix');
-                nav.removeClass('navbar-dark').addClass('navbar-light');
+                nav.addClass('affix navbar-light').removeClass('navbar-dark');
             } else {
-                // Al subir: volvemos al estado inicial transparente con letras blancas
                 nav.removeClass('affix navbar-light').addClass('navbar-dark');
             }
         });
+
+        // --- ESTE ES EL SCRIPT QUE DISPARA EL MODAL ---
+        document.addEventListener("DOMContentLoaded", function () {
+            {% if messages %}
+            var myModal = new bootstrap.Modal(document.getElementById('djangoMessagesModal'));
+            var modalMessage = document.getElementById('modalMessage');
+            var modalIcon = document.getElementById('modalIcon');
+            var modalTitle = document.getElementById('modalTitle');
+
+            {% for message in messages %}
+            modalMessage.innerText = "{{ message }}";
+
+            {% if message.tags == 'success' %}
+            modalTitle.innerText = "¡Éxito!";
+            modalIcon.innerHTML = '<i class="ti-check-box text-success" style="font-size: 4rem;"></i>';
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+            modalTitle.innerText = "Error";
+            modalIcon.innerHTML = '<i class="ti-alert text-danger" style="font-size: 4rem;"></i>';
+            {% else %}
+            modalTitle.innerText = "Aviso";
+            modalIcon.innerHTML = '<i class="ti-info-alt text-primary" style="font-size: 4rem;"></i>';
+            {% endif %}
+            {% endfor %}
+
+            myModal.show();
+            {% endif %}
+        });
     </script>
 </body>
+
 </html>

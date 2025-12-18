@@ -1,31 +1,74 @@
 {% extends 'base.html' %}
-{% block contenido %}
+{% load static %}
 {% load colaborador_tags %}
 
-{% if user.is_superuser or request.user|has_group:"Colaborador"  %}
-<form method="post" id="deleteForm">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ request.get_full_path }}">
-    <h1>{{ mensaje }}</h1>
-    <div class='main-container' style="text-align: center; margin-top: 12%; margin-bottom: 12%;">
-        <h3><br><br><br><br>¿Está seguro que desea eliminar el comentario?</h3>
-        <input class="btn btn-danger" type="submit" value='Eliminar'>
-        <button class="btn btn-success" id="cancelButton">Cancelar</button>
+{% block title %} Confirmar Eliminación | Smart Cities {% endblock title %}
+
+{% block contenido %}
+
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            
+            {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden text-center">
+                <div class="bg-danger" style="height: 5px;"></div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-4">
+                        <i class="ti-alert text-danger" style="font-size: 4rem; display: block;"></i>
+                    </div>
+
+                    <h2 class="fw-bold text-dark mb-3">¿Estás seguro?</h2>
+                    <p class="text-muted mb-4">
+                        Estás a punto de eliminar un comentario de forma permanente. Esta acción no se puede deshacer.
+                    </p>
+
+                    <form method="post" id="deleteForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        
+                        <div class="d-grid gap-3">
+                            <button type="submit" class="btn btn-danger btn-rounded shadow-sm">
+                                <i class="ti-trash me-2"></i> Eliminar
+                            </button>
+                            
+                            <button type="button" class="btn btn-light btn-rounded border text-muted" id="cancelButton">
+                                <i class="ti-close me-2"></i> Cancelar y volver
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            {% else %}
+            <div class="card shadow-lg border-0 rounded-lg p-5 text-center bg-white">
+                <i class="ti-lock text-warning mb-3" style="font-size: 3rem;"></i>
+                <h4 class="fw-bold">Acceso Restringido</h4>
+                <p class="text-muted">Solo usuarios con permisos administrativos pueden eliminar contenido.</p>
+                <div class="mt-4">
+                    <a href="{% url 'index' %}" class="btn btn-primary btn-rounded px-4">Volver al Inicio</a>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
     </div>
-</form>
-{% else %}
-    <div class="container text-center">
-        <br><br><br><br>
-        <h1>Solo usuarios con permisos pueden acceder a esta página</h1>
-        <br><br><br><br>
-    </div>
-{% endif %}
+</div>
+
+<div class="py-5"></div>
 
 <script>
-document.getElementById('cancelButton').addEventListener('click', function(event) {
-    event.preventDefault();
-    history.back();
-});
+    // Lógica mejorada para el botón cancelar
+    document.getElementById('cancelButton').addEventListener('click', function(event) {
+        event.preventDefault();
+        // Intentamos volver atrás, si no hay historial, vamos al index
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "{% url 'index' %}";
+        }
+    });
 </script>
 
 {% endblock %}

@@ -2,50 +2,64 @@
 {% load static %} 
 {% load crispy_forms_tags %}
 
-<title>{% block title %} Iniciar Sesión {% endblock title %}</title>
+{% block title %} Iniciar Sesión | Smart Cities {% endblock title %}
 
 {% block contenido %}
 
-<div class="container-fluid bg-light py-5">
+<div class="container-fluid bg-light py-5 mt-5">
     <div class="col-md-6 m-auto text-center">
-        <h1 class="h1">Iniciar sesión</h1>
-        <p>A continuación ingresa tus credenciales para acceder al portal.</p>
+        <h1 class="h1 fw-bold">Bienvenido</h1>
+        <p class="text-muted lead">Ingresá tus credenciales para acceder a la comunidad de Smart Cities.</p>
     </div>
 </div>
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10"> 
-            <div class="card shadow p-4 p-md-5 border-0 rounded-4">    
-                <form action="{% url 'apps.usuario:login' %}" method="POST" role="form">
-                    {% csrf_token %}
-                    
-                    <div class="mb-4">
-                        {{ form | crispy }}
+        <div class="col-lg-6 col-md-8"> 
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
+                <div class="bg-primary" style="height: 5px;"></div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <i class="ti-lock text-primary" style="font-size: 3rem;"></i>
                     </div>
 
-                    <div class="row g-3"> <div class="col-12 col-md-4">
-                            <a class="btn btn-primary w-100"
-                                href="{% url 'apps.usuario:registrar' %}?next={{ request.GET.next }}">
-                                <small>¿Todavía no está registrado?</small><br>Registrate
-                            </a>
-                        </div>
+                    <form action="{% url 'apps.usuario:login' %}" method="POST" role="form">
+                        {% csrf_token %}
                         
-                        <div class="col-12 col-md-4">
-                            <a class="btn btn-secondary w-100" href="{% url 'apps.usuario:password_reset' %}">
-                                <small>¿Olvidaste tu contraseña?</small><br>Recuperar
-                            </a>
+                        <div class="mb-4 text-dark">
+                            {{ form | crispy }}
                         </div>
-                        
-                        <div class="col-12 col-md-4">
-                            <button type="submit" class="btn btn-success btn-lg w-100">
-                                Iniciar sesión
+
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg btn-rounded w-100 shadow-sm">
+                                <i class="ti-key me-2"></i> Iniciar sesión
                             </button>
                         </div>
-                    </div>
-                </form>
+
+                        <hr>
+
+                        <div class="row text-center mt-4">
+                            <div class="col-6 border-end">
+                                <a class="text-decoration-none small text-muted transition-link" 
+                                   href="{% url 'apps.usuario:registrar' %}?next={{ request.GET.next }}">
+                                    <i class="ti-pencil-alt d-block mb-1 h5"></i>
+                                    ¿No tenés cuenta?<br><strong>Registrate</strong>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a class="text-decoration-none small text-muted transition-link" 
+                                   href="{% url 'apps.usuario:password_reset' %}">
+                                    <i class="ti-help-alt d-block mb-1 h5"></i>
+                                    ¿Olvidaste la clave?<br><strong>Recuperar</strong>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

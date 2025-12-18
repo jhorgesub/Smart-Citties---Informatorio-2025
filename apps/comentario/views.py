@@ -9,7 +9,6 @@ from .forms import ComentarioForm
 from apps.posts.models import Post
 from apps.usuario.models import Usuario
 
-
 class ComentarPostView(LoginRequiredMixin, View):
     def get(self, request, id):
         post = get_object_or_404(Post, id=id)
@@ -24,9 +23,12 @@ class ComentarPostView(LoginRequiredMixin, View):
             comentario.post = post
             comentario.usuario = request.user
             comentario.save()
+            # AGREGAMOS EL MENSAJE AQUÍ
+            messages.success(request, '¡Comentario publicado con éxito!')
             return redirect('apps.posts:post_individual', pk=post.pk)
+        
+        messages.error(request, 'Hubo un error al procesar tu comentario.')
         return render(request, 'comentario/comentar.html', {'form': form, 'post': post})
-
 
 class ListadoComentarioView(View):
     def get(self, request):

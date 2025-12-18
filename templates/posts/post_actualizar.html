@@ -3,56 +3,79 @@
 {% load colaborador_tags %}
 {% load crispy_forms_tags %}
 
-<title>{% block title %}{% if object.id %}Editar{% else %}Crear{% endif %} Post | Smart Cities{% endblock %}</title>
+{% block title %}{% if object.id %}Editar{% else %}Crear{% endif %} Post | Smart Cities{% endblock %}
 
 {% block contenido %}
-
 
 {% if user.is_superuser or request.user|has_group:"Colaborador" %}
 <div class="container py-5 mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-9">
             
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold text-dark">
-                    {% if object.id %}✍️ Modificar{% else %} Crear {% endif %} Post
-                </h2>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+                <div>
+                    <h2 class="fw-bold text-dark mb-0">
+                        <i class="ti-pencil-alt text-primary me-2"></i>
+                        {% if object.id %}Modificar Post{% else %}Crear nuevo Post{% endif %}
+                    </h2>
+                    <p class="text-muted small mb-0">Completá los campos para mantener informada a la comunidad.</p>
+                </div>
                 
-                <a class="btn btn-success" href="{% url 'apps.posts:crear_categoria' %}{% if object.id %}?next={{ request.get_full_path }}{% endif %}">
-                    <i class="fas fa-plus-circle"></i> Nueva Categoría
+                <a class="btn btn-outline-success btn-rounded btn-sm px-3 shadow-none" href="{% url 'apps.posts:crear_categoria' %}{% if object.id %}?next={{ request.get_full_path }}{% endif %}">
+                    <i class="ti-plus me-1"></i> Nueva Categoría
                 </a>
             </div>
 
-            <div class="card card-post bg-white">
+            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
+                <div class="bg-primary" style="height: 5px;"></div>
+                
                 <div class="card-body p-4 p-md-5">
                     <form method="POST" enctype="multipart/form-data" id="posts-form">
                         {% csrf_token %}
                         
-                        {# Aquí Crispy hace toda la magia #}
-                        {{ form|crispy }}
+                        <div class="text-dark">
+                            {{ form|crispy }}
+                        </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a href="{% url 'apps.posts:posts' %}" class="btn btn-light border px-4">Cancelar</a>
-                            <button type="submit" class="btn btn-primary px-5">
-                                {% if object.id %}Actualizar Post{% else %}Publicar Ahora{% endif %}
-                            </button>
+                        <div class="row mt-5">
+                            <div class="col-md-6 order-2 order-md-1 mt-3 mt-md-0">
+                                <a href="{% url 'apps.posts:posts' %}" class="btn btn-light btn-rounded w-100 border shadow-sm text-muted">
+                                    <i class="ti-close me-1"></i> Cancelar
+                                </a>
+                            </div>
+                            <div class="col-md-6 order-1 order-md-2">
+                                <button type="submit" class="btn btn-primary btn-rounded w-100 shadow">
+                                    <i class="ti-save me-1"></i> 
+                                    {% if object.id %}Guardar Cambios{% else %}Publicar Ahora{% endif %}
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
 {% else %}
     <div class="container py-5 mt-5 text-center">
-        <div class="alert alert-warning shadow p-5" role="alert">
-            <i class="fas fa-lock fa-3x mb-3 text-danger"></i>
-            <h2 class="fw-bold">Acceso Restringido</h2>
-            <p class="lead">Lo sentimos, no tenés los permisos necesarios para gestionar artículos.</p>
-            <a href="{% url 'index' %}" class="btn btn-dark mt-3">Volver al Inicio</a>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0 rounded-lg p-5">
+                    <i class="ti-na text-danger mb-4" style="font-size: 5rem;"></i>
+                    <h2 class="fw-bold">Acceso Denegado</h2>
+                    <p class="text-muted lead">No tenés permisos para gestionar artículos de Smart Cities.</p>
+                    <div class="mt-4">
+                        <a href="{% url 'index' %}" class="btn btn-primary btn-rounded px-5 shadow">
+                            <i class="ti-home me-2"></i>Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endif %}
+
+<div class="py-5"></div>
+
 {% endblock contenido %}
