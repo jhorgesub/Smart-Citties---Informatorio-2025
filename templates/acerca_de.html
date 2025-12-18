@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 shadow p-5 bg-white rounded">
+            <h2 class="fw-bold border-bottom pb-3 text-primary">Acerca de Smart Cities</h2>
+
+            <h4 class="mt-5">Propósito del Blog</h4>
+            <p>
+                Smart Cities es una plataforma diseñada para explorar la integración de la tecnología en la infraestructura urbana. 
+                Busca informar sobre sostenibilidad, eficiencia energética y el uso de datos para mejorar la vida de los ciudadanos.
+            </p>
+
+            <h4 class="mt-4">El Equipo</h4>
+            <p>
+                Este sitio fue desarrollado íntegramente por <strong>Jorge Subeldia</strong> 
+                para la Etapa 2 - Desarrollo Web del <strong>Informatorio - Chaco 2025</strong> 
+                utilizando <strong>Python,</strong>   
+                el framework <strong>Django</strong>, base de datos SQLite y Bootstrap para el diseño responsivo.
+            </p>
+
+            <div class="text-center mt-5">
+                <a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

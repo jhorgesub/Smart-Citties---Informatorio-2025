@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+<title>{% block title %}Smart Cities - Inicio{% endblock title %}</title>
+
+{% block contenido %}
+
+<div class="container my-1" id="definicion">
+    <header class="text-center mb-4" id="blog">
+        <h1 class="display-4 fw-bold">¿Qué es una Smart City?</h1>
+        <h4 class="text-muted mt-3">Las ciudades inteligentes priorizan la experiencia humana sobre la automatización y
+            los algoritmos en la planificación urbana.</h4>
+        <p class="lead mt-4 mx-auto" style="max-width: 800px;">El término aparece en conferencias, planes de gobierno,
+            titulares de prensa y hasta en las propuestas de las grandes empresas tecnológicas. Pero ¿qué significa
+            realmente? ¿Es solo un modo de decir que la ciudad está llena de sensores, cámaras y datos? ¿O hay algo más
+            detrás de esa etiqueta que parece prometer modernidad?</p>
+    </header>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div id="smartCityCarousel"
+                class="carousel slide shadow-lg rounded-4 overflow-hidden border border-3 border-light"
+                data-bs-ride="carousel">
+
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#smartCityCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="/media/media/Imagen1.png" class="d-block w-100"
+                            alt="Vista panorámica de una ciudad con superposición de datos digitales"
+                            style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                            <h5>Conectividad y Gestión de Datos</h5>
+                            <p>La columna vertebral de una Smart City es la red de sensores interconectados.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="/media/media/Imagen2.png" class="d-block w-100"
+                            alt="Personas usando bicicletas y transporte público, destacando la movilidad sostenible"
+                            style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                            <h5>Movilidad Inteligente y Sostenible</h5>
+                            <p>Optimización del tráfico y promoción de alternativas ecológicas para los ciudadanos.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="/media/media/Imagen3.png" class="d-block w-100"
+                            alt="Edificios con paneles solares y zonas verdes, enfocando la energía inteligente"
+                            style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                            <h5>Infraestructura Ecológica</h5>
+                            <p>Sistemas de energía eficiente y gestión avanzada de recursos naturales.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#smartCityCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#smartCityCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+
+            <section class="section" id="blog">
+                <div class="container">
+                    <h6 class="section-title mb-0 text-center">Últimas noticias</h6>
+                    <h6 class="section-subtitle mb-5 text-center">Las últimas noticias sobre Smart Cities alrededor del
+                        mundo</h6>
+
+                    <div class="row">
+                        {% for post in ultimos_posts %}
+                        <div class="col-md-4">
+                            <div class="card border-0 mb-4">
+                                <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}" class="card-img-top w-100"
+                                    style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ post.titulo | capfirst }}</h6>
+
+                                    <p>{{ post.subtitulo }}</p>
+
+                                    <a href="{% url 'apps.posts:post_individual' post.id %}" class="small text-muted">Ir
+                                        a la noticia</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p class="lead">Actualmente no hay posts publicados.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

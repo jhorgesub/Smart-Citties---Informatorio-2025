@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load colaborador_tags %}
+
+<title>{% block title %}{{ posts.titulo }} | Blog de Smart Cities{% endblock title %}</title>
+
+
+{% block contenido %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <header class="mb-4 text-center">
+
+                <small class="badge bg-primary text-uppercase mb-3 p-2 fw-normal">{{ posts.categoria }}</small>
+
+                <h1 class="display-5 fw-bolder mb-3 text-dark">{{ posts.titulo }}</h1>
+                <h7 class="display-5 fw-bolder mb-3 text-dark">{{ posts.subtitulo }}</h7>
+
+                <p class="text-muted fst-italic my-3">Publicado por Jorge Subeldia el {{ posts.fecha|date:"d \d\e F \d\e Y" }}</p>
+            </header>
+
+            {% if posts.imagen %}
+
+            <figure class="mb-0 rounded-4 overflow-hidden shadow-lg">
+                <img class="img-fluid w-100" src="{{ posts.imagen.url }}" alt="{{ posts.titulo }}"
+                    style="max-height: 450px; object-fit: cover;">
+            </figure>
+
+            <p class="text-center pt-2 pb-5 px-2 text-muted fst-italic small">
+                <h7 class="display-5 fw-bolder mb-3 text-dark">{{ posts.pie_pagina }}</h7>
+            </p>
+
+            {% endif %}
+
+            <section class="mb-5 text-dark" style="font-size: 1.15rem; line-height: 1.8;">
+                {{ posts.texto|safe }}
+            </section>
+            <form action="" method="GET">
+                <div class="row pb-3">
+                    <div class="col d-grid">
+                        <a class="btn btn-success btn-lg"
+                            href="{% url 'apps.comentario:comentar_post' id=posts.pk %}"><span>Comentar</span></a>
+                    </div>
+                    {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+                    <div class="col d-grid">
+                        <a href="{% url 'apps.posts:post_form' pk=posts.pk %}" class="btn btn-success btn-lg"
+                            value="editar">Editar post</a>
+                    </div>
+                    <div class="col d-grid">
+                        <a href="{% url 'apps.posts:post_eliminar' pk=posts.pk %}" class="btn btn-success btn-lg"
+                            value="eliminar">Eliminar post</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </form>
+
+            <hr class="my-5">
+
+            <section class="comments-section">
+                <h3 class="mb-4">Comentarios</h3>
+
+                {# Usamos posts.comentario_set.all para traer los comentarios de este post específico #}
+                {% for c in posts.comentarios.all %}
+                <div class="row justify-content-center mb-3">
+                    <div class="card shadow-sm border-0 bg-light p-3">
+                        <div class="d-flex gap-3 py-3 align-items-start">
+                            {% if c.usuario.imagen and c.usuario.imagen.url %}
+                            <img src="{{ c.usuario.imagen.url }}" style="width:50px; height: 50px; object-fit: cover;"
+                                class="rounded-circle flex-shrink-0 border">
+                            {% else %}
+                            <img src="/media/media/usuario_por_defecto.jpg" style="width:50px; height: 50px;"
+                                class="rounded-circle flex-shrink-0">
+                            {% endif %}
+
+                            <div class="d-flex flex-column w-100">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <h6 class="mb-0 fw-bold">{{ c.usuario.username }}</h6>
+                                    <small class="text-muted">{{ c.fecha|date:"d/m/Y H:i" }}</small>
+                                </div>
+                                <p class="mb-2 text-break">{{ c.texto }}</p>
+
+                                {% if user.is_superuser %}
+                                <div class="text-end">
+                                    <a class="text-danger text-decoration-none small"
+                                        href="{% url 'apps.comentario:eliminarComentario' c.pk %}">
+                                        <i class="bi bi-trash"></i> Eliminar comentario
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center text-muted">Aún no hay comentarios en este post. ¡Sé el primero en comentar!</p>
+                {% endfor %}
+            </section>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

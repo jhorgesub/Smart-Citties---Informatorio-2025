@@ -1,0 +1,177 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es-ar">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Smart Cities</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyQQpT2s+I6H9t10C9s2lQ3Yh8/0sM5C+Kj2n/gO5+K+QfA5j3A9p2+qE/3" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'assets/vendors/themify-icons/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/leadmark.css' %}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.17/dist/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body data-bs-spy="scroll" data-target=".navbar" data-offset="40" id="home" style="overflow-x: hidden;">
+    <nav class="navbar custom-navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'assets/imgs/logo.svg' %}" alt="Logo">
+            </a>
+            <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'index' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'apps.posts:posts' %}">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'apps.contacto:contacto' %}">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'acerca_de' %}">Acerca de</a>
+                    </li>
+
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item d-flex align-items-center">
+                        <form action="{% url 'apps.usuario:logout' %}" method="post" id="logout-form" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="ml-lg-4 btn btn-danger btn-sm rounded text-white"
+                                style="border: none;">{{ user.username }}: Cerrar sesión </button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'apps.usuario:login' %}?next={{ request.path }}"
+                            class="ml-lg-4 nav-link btn btn-primary btn-sm rounded text-white">Iniciar sesión</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="overlay">
+            <h1 class="subtitle">Ciudades inteligentes</h1>
+            <h1 class="title">Smart Cities</h1>
+        </div>
+        <div class="shape">
+            <svg viewBox="0 0 1500 200">
+                <path
+                    d="m 0,240 h 1500.4828 v -71.92164 c 0,0 -286.2763,-81.79324 -743.19024,-81.79324 C 300.37862,86.28512 0,168.07836 0,168.07836 Z" />
+            </svg>
+        </div>
+    </header>
+
+    {% block contenido %}
+
+    {% endblock %}
+
+    <div class="row text-light mb-4">
+        <div class="col-12 mb-3">
+            <div class="w-100 my-3 border-top border-light"></div>
+        </div>
+    </div>
+    <section id="contact" class="section has-img-bg pb-0">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-5 my-3 text-center">
+                    <h5 class="mb-4 text-primary fw-bold">Conecta conmigo</h5>
+
+                    <div class="d-flex justify-content-center gap-4">
+
+                        <a href="https://www.linkedin.com/in/jorgesubeldia/" target="_blank"
+                            class="text-decoration-none mx-2" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin fa-3x text-white"></i>
+                        </a>
+
+                        <a href="https://www.instagram.com/jhor.geto_/" target="_blank"
+                            class="text-decoration-none mx-2" aria-label="Instagram">
+                            <i class="fab fa-instagram fa-3x text-white"></i>
+                        </a>
+
+                        <a href="https://github.com/jhorgesub" target="_blank" class="text-decoration-none  mx-2"
+                            aria-label="GitHub">
+                            <i class="fab fa-github fa-3x text-white"></i>
+                        </a>
+                    </div>
+
+                    <small class="d-block mt-4 text-muted">¡Síguenos para más actualizaciones sobre Smart
+                        Cities!</small>
+                </div>
+                <div class="col-md-7">
+                    <form method="POST" action="{% url 'apps.contacto:contacto' %}">
+                        {% csrf_token %} <h4 class="mb-4">Contactame</h4>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <input type="text" class="form-control text-white rounded-0 bg-transparent"
+                                    name="nombre_apellido" placeholder="Nombre" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <input type="email" class="form-control text-white rounded-0 bg-transparent"
+                                    name="email" placeholder="Email" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <input type="text" class="form-control text-white rounded-0 bg-transparent"
+                                    name="asunto" placeholder="Asunto">
+                            </div>
+                            <div class="form-group col-12">
+                                <textarea name="mensaje" id="" cols="30" rows="4"
+                                    class="form-control text-white rounded-0 bg-transparent" placeholder="Mensaje"
+                                    required></textarea>
+                            </div>
+                            <div class="form-group col-12 mb-0">
+                                <button type="submit" class="btn btn-primary rounded w-md mt-3">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Page Footer -->
+            <footer class="mt-5 py-4 border-top border-secondary text-center">
+                <p class="mb-0 small">&copy;
+                    Created By Group 1 - <a href="https://campus-informatorio.chaco.gob.ar/"
+                        target="_blank">Informatorio Chaco
+                        2025</a>
+                </p>
+            </footer>
+            <!-- End of Page Footer -->
+        </div>
+    </section>
+
+    <script src="{% static 'assets/js/templatemo.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        Swal.fire({
+            text: "{{ message }}",
+            icon: "{{ message.tags }}"
+        });
+    </script>
+    {% endfor %}
+    {% endif %}
+
+</body>
+
+</html>
