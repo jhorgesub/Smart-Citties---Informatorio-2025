@@ -16,7 +16,7 @@
                 <p class="text-muted small">Definí una nueva temática para organizar los artículos.</p>
             </div>
 
-            <div class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
+            <div id="categoria-form-container" tabindex="-1" class="card shadow-lg border-0 rounded-lg bg-white overflow-hidden">
                 <div class="bg-primary" style="height: 5px;"></div>
                 
                 <div class="card-body p-4 p-md-5">
@@ -55,5 +55,26 @@
 </div>
 
 <div class="py-5"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Buscamos el contenedor para el desplazamiento inicial
+        const container = document.getElementById('categoria-form-container');
+        if (container) {
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // 2. Buscamos el input de 'Nombre' dentro de los labels de crispy
+        const campoNombre = document.querySelector('.custom-crispy-labels input[type="text"]');
+        if (campoNombre) {
+            // Un pequeño delay asegura que el navegador esté listo tras la animación
+            setTimeout(() => {
+                campoNombre.focus();
+            }, 600);
+        }
+    });
+</script>
 
 {% endblock %}

@@ -6,7 +6,7 @@
 
 {% block contenido %}
 
-<div class="container-fluid bg-light py-5 mt-5">
+<div id="categorias-start" tabindex="-1" class="container-fluid bg-light py-5 mt-5">
     <div class="col-md-6 m-auto text-center">
         <h1 class="h1 fw-bold">Listado de Categorías</h1>
         <p class="text-muted lead">Seleccioná una categoría para ver los posts relacionados.</p>
@@ -62,7 +62,7 @@
                         <button type="button" class="btn btn-secondary btn-sm btn-rounded px-3" data-bs-dismiss="modal">Cancelar</button>
                         <form action="{% url 'apps.posts:categoria_eliminar' pk=categoria.pk %}" method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm btn-rounded px-3 shadow-sm">Sí, eliminar</button>
+                            <button type="submit" class="btn btn-danger btn-sm btn-rounded px-3 shadow-sm">Eliminar</button>
                         </form>
                     </div>
                 </div>
@@ -101,5 +101,36 @@
         margin: 0 auto;
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const startSection = document.getElementById('categorias-start');
+        const categoryCards = document.querySelectorAll('.card-categoria');
+        
+        // 1. Foco y desplazamiento suave al título
+        if (startSection) {
+            setTimeout(() => {
+                startSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                startSection.focus({ preventScroll: true });
+            }, 300);
+        }
+
+        // 2. Efecto de aparición en cascada para las tarjetas de categoría
+        if (categoryCards.length > 0) {
+            categoryCards.forEach((card, index) => {
+                // Estilo inicial invisible
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.5s ease-out ${index * 0.1}s`;
+                
+                // Disparo de la animación
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 500);
+            });
+        }
+    });
+</script>
 
 {% endblock %}

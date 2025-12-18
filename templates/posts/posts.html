@@ -65,7 +65,7 @@
 
                     {% if user.is_superuser or request.user|has_group:"Colaborador" %}
                     <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2">
-                        <a href="{% url 'apps.posts:posts' %}" class="btn-admin-tool shadow-sm text-primary"
+                        <a href="{% url 'apps.posts:post_form' post.pk %}" class="btn-admin-tool shadow-sm text-primary"
                             title="Editar">
                             <i class="ti-pencil"></i>
                         </a>
@@ -109,7 +109,7 @@
                                 data-bs-dismiss="modal">Cancelar</button>
                             <form action="{% url 'apps.posts:post_eliminar' post.pk %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-rounded px-4">Sí eliminar</button>
+                                <button type="submit" class="btn btn-danger btn-rounded px-4">Eliminar</button>
                             </form>
                         </div>
                     </div>
