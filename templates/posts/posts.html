@@ -60,8 +60,7 @@
                         style="height: 220px; object-fit: cover;">
                     {% endif %}
 
-                    <span class="badge bg-primary position-absolute top-0 start-0 m-3 shadow-sm">{{ post.categoria
-                        }}</span>
+                    <span class="badge bg-primary position-absolute top-0 start-0 m-3 shadow-sm">{{ post.categoria }}</span>
 
                     {% if user.is_superuser or request.user|has_group:"Colaborador" %}
                     <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2">

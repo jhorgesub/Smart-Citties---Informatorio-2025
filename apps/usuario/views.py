@@ -1,7 +1,6 @@
 from .models import Usuario
 from .forms import RegistroUsuarioForm
 from ..posts.models import Post
-#from ..comentario.models import Comentario
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -9,6 +8,7 @@ from django.contrib.auth.models import Group
 from django.views.generic import CreateView, ListView, DeleteView
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth import logout
 
 
 class RegistrarUsuario(CreateView):
@@ -29,13 +29,10 @@ class LoginUsuario(LoginView):
         messages.success(self.request, 'Login exitoso')
         return reverse('index')
      
-class LogoutUsuario(LogoutView):
-    template_name = 'registration/logout.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        messages.success(request, 'Logout exitoso')
-        return response
+def logout_usuario(request):
+    logout(request)
+    messages.success(request, 'Logout exitoso. ¡Vuelve pronto!')
+    return redirect('index')
 
 class UsuarioListView(LoginRequiredMixin, ListView):
     model = Usuario

@@ -43,6 +43,20 @@
         #contact .form-control:-webkit-autofill {
             border-bottom: 1px solid white !important;
         }
+
+        /* Quita el borde azul (outline) que pone el navegador por defecto */
+        .btn:focus,
+        .btn:active {
+            outline: none !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 110, 66, 0.25) !important;
+            /* Un resplandor naranja suave en vez de azul */
+        }
+
+        /* Si querés que el botón del modal sea naranja Smart Cities siempre */
+        .modal-footer .btn-primary {
+            background-color: #ff6e42 !important;
+            border-color: #ff6e42 !important;
+        }
     </style>
 
 </head>
@@ -172,23 +186,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        $(window).on('scroll', function () {
-            var nav = $('.navbar');
-            if ($(window).scrollTop() > 50) {
-                nav.addClass('affix navbar-light').removeClass('navbar-dark');
-            } else {
-                nav.removeClass('affix navbar-light').addClass('navbar-dark');
-            }
-        });
-
-        // --- ESTE ES EL SCRIPT QUE DISPARA EL MODAL ---
         document.addEventListener("DOMContentLoaded", function () {
             {% if messages %}
-            var myModal = new bootstrap.Modal(document.getElementById('djangoMessagesModal'));
+            // 1. Inicializamos el modal
+            var modalElement = document.getElementById('djangoMessagesModal');
+            var myModal = new bootstrap.Modal(modalElement);
+
             var modalMessage = document.getElementById('modalMessage');
             var modalIcon = document.getElementById('modalIcon');
             var modalTitle = document.getElementById('modalTitle');
 
+            // 2. Cargamos el contenido del mensaje
             {% for message in messages %}
             modalMessage.innerText = "{{ message }}";
 
@@ -199,15 +207,27 @@
             modalTitle.innerText = "Error";
             modalIcon.innerHTML = '<i class="ti-alert text-danger" style="font-size: 4rem;"></i>';
             {% else %}
-            modalTitle.innerText = "Aviso";
+            modalTitle.innerText = "Notificación";
             modalIcon.innerHTML = '<i class="ti-info-alt text-primary" style="font-size: 4rem;"></i>';
             {% endif %}
             {% endfor %}
 
+            // 3. Mostramos el modal
             myModal.show();
+
+            // --- LA MAGIA PARA EL ENTER ---
+            // Cuando el modal termina de mostrarse, le damos foco al botón
+            modalElement.addEventListener('shown.bs.modal', function () {
+                // Buscamos el botón dentro del footer del modal
+                var btnEntendido = modalElement.querySelector('.modal-footer .btn');
+                if (btnEntendido) {
+                    btnEntendido.focus();
+                }
+            });
             {% endif %}
         });
     </script>
+
 </body>
 
 </html>
